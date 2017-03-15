@@ -2,9 +2,9 @@
 
 namespace Craft;
 
-class CraftGeolocationPlugin extends BasePlugin
+class LocationPlugin extends BasePlugin
 {
-	private $name = 'Craft Geolocation';
+	private $name = 'Location';
 	private $developer = 'Taylor Daughtry';
 	private $developerUrl = 'https://taylordaughtry.com';
 	private $version = '1.0.0';
@@ -39,5 +39,31 @@ class CraftGeolocationPlugin extends BasePlugin
 	public function getDescription()
 	{
 		return $this->description;
+	}
+
+	public function defineSettings()
+	{
+		return [
+			'preferredProvider' => [
+				AttributeType::String,
+				'default' => 'freeGeoIp'
+			],
+			'defaultLocation' => [
+				AttributeType::Mixed,
+				'default' => [
+					'ip' => '23.114.164.42',
+					'country_code' => 'US',
+					'country_name' => 'United States',
+					'region_code' => 'TN',
+					'region_name' => 'Tennessee',
+					'city' => 'Franklin',
+					'zip_code' => '37064',
+					'time_zone' => 'America/Chicago',
+					'latitude' => '35.9024',
+					'longitude' => '-86.9595',
+					'metro_code' => 659
+				]
+			]
+		];
 	}
 }
