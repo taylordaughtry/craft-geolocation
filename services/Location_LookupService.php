@@ -8,13 +8,11 @@ class Location_LookupService extends BaseApplicationComponent
 {
 	private $settings;
 	private $address;
-	private $client;
 
 	public function __construct()
 	{
 		$this->settings = craft()->plugins->getPlugin('location')->getSettings();
 		$this->address = craft()->request->getIpAddress();
-		$this->client = new Client();
 	}
 
 	public function locateIp()
@@ -23,11 +21,9 @@ class Location_LookupService extends BaseApplicationComponent
 			return $this->settings->defaultLocation;
 		}
 
-		$response = $this->client->get('https://freegeoip.net/json/' . $this->address)
-			->send()
-			->json();
+		$provider = $this->getProvider();
 
-		foreach ($response as $key => $value) {
+		foreach ($provider->getLocation($this->address) as $key => $value) {
 			$result[StringHelper::toCamelCase($key)] = $value;
 		}
 
@@ -37,5 +33,14 @@ class Location_LookupService extends BaseApplicationComponent
 	private function isLocalRequest()
 	{
 		return in_array($this->address, ['127.0.0.1', '::1']);
+	}
+
+	private function getProvider()
+	{
+		require_once(CRAFT_PLUGINS_PATH . 'location/providers/' . $this->settings->provider . 'Provider.php');
+
+		$provider = '\Craft\\' . $this->settings->provider . 'Provider';
+
+		return new $provider();
 	}
 }
