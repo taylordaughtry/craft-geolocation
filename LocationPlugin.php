@@ -44,7 +44,7 @@ class LocationPlugin extends BasePlugin
 	public function defineSettings()
 	{
 		return [
-			'preferredProvider' => [
+			'provider' => [
 				AttributeType::String,
 				'default' => 'freeGeoIp'
 			],
