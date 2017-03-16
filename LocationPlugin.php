@@ -66,4 +66,9 @@ class LocationPlugin extends BasePlugin
 			]
 		];
 	}
+
+	public function init()
+	{
+		require_once(CRAFT_PLUGINS_PATH . 'location/interfaces/Location_Provider.php');
+	}
 }
